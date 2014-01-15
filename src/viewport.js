@@ -473,8 +473,7 @@ Crafty.extend({
          *
          * @see Crafty.device, Crafty.DOM, Crafty.stage
          */
-        init: function (w, h, stage_elem) {
-            Crafty.DOM.window.init();
+        init: function (w, h) {
 
             // setters+getters for the viewport
             this._defineViewportProperties();
@@ -483,17 +482,6 @@ Crafty.extend({
             this._height = (!h) ? Crafty.DOM.window.height : h;
 
 
-            //check if stage exists
-            if (typeof stage_elem === 'undefined')
-                stage_elem = "cr-stage";
-
-            var crstage;
-            if (typeof stage_elem === 'string')
-                crstage = document.getElementById(stage_elem);
-            else if (typeof HTMLElement !== "undefined" ? stage_elem instanceof HTMLElement : stage_elem instanceof Element)
-                crstage = stage_elem;
-            else
-                throw new TypeError("stage_elem must be a string or an HTMLElement");
 
             /**@
              * #Crafty.stage
@@ -521,13 +509,21 @@ Crafty.extend({
              * ~~~
              */
 
+             var c;
+             c = document.createElement("canvas");
+             c.width = Crafty.viewport.width;
+             c.height = Crafty.viewport.height;
+
+             Crafty.canvas._canvas = c;
+             Crafty.canvas.context = c.getContext('2d');
+             document.body.appendChild(c);
+
             //create stage div to contain everything
             Crafty.stage = {
                 x: 0,
                 y: 0,
                 fullscreen: false,
-                elem: (crstage ? crstage : document.createElement("div")),
-                inner: document.createElement("div")
+                elem: c
             };
 
             //fullscreen, stop scrollbars
@@ -538,58 +534,31 @@ Crafty.extend({
 
             Crafty.addEvent(this, window, "resize", Crafty.viewport.reload);
 
-            Crafty.addEvent(this, window, "blur", function () {
-                if (Crafty.settings.get("autoPause")) {
-                    if (!Crafty._paused) Crafty.pause();
-                }
-            });
-            Crafty.addEvent(this, window, "focus", function () {
-                if (Crafty._paused && Crafty.settings.get("autoPause")) {
-                    Crafty.pause();
-                }
-            });
+            // Crafty.addEvent(this, window, "blur", function () {
+            //     if (Crafty.settings.get("autoPause")) {
+            //         if (!Crafty._paused) Crafty.pause();
+            //     }
+            // });
+            // Crafty.addEvent(this, window, "focus", function () {
+            //     if (Crafty._paused && Crafty.settings.get("autoPause")) {
+            //         Crafty.pause();
+            //     }
+            // });
 
-            //make the stage unselectable
-            Crafty.settings.register("stageSelectable", function (v) {
-                Crafty.stage.elem.onselectstart = v ? function () {
-                    return true;
-                } : function () {
-                    return false;
-                };
-            });
-            Crafty.settings.modify("stageSelectable", false);
-
-            //make the stage have no context menu
-            Crafty.settings.register("stageContextMenu", function (v) {
-                Crafty.stage.elem.oncontextmenu = v ? function () {
-                    return true;
-                } : function () {
-                    return false;
-                };
-            });
-            Crafty.settings.modify("stageContextMenu", false);
 
             Crafty.settings.register("autoPause", function () {});
             Crafty.settings.modify("autoPause", false);
 
-            //add to the body and give it an ID if not exists
-            if (!crstage) {
-                document.body.appendChild(Crafty.stage.elem);
-                Crafty.stage.elem.id = stage_elem;
-            }
 
-            var elem = Crafty.stage.elem.style,
-                offset;
-
-            Crafty.stage.elem.appendChild(Crafty.stage.inner);
-            Crafty.stage.inner.style.position = "absolute";
-            Crafty.stage.inner.style.zIndex = "1";
-            Crafty.stage.inner.style.transformStyle = "preserve-3d"; // Seems necessary for Firefox to preserve zIndexes?
+            // Crafty.stage.elem.appendChild(Crafty.stage.inner);
+            // Crafty.stage.inner.style.position = "absolute";
+            // Crafty.stage.inner.style.zIndex = "1";
+            // Crafty.stage.inner.style.transformStyle = "preserve-3d"; // Seems necessary for Firefox to preserve zIndexes?
 
             //css style
-            elem.width = this.width + "px";
-            elem.height = this.height + "px";
-            elem.overflow = "hidden";
+            // elem.width = this.width + "px";
+            // elem.height = this.height + "px";
+            // elem.overflow = "hidden";
 
 
             // resize events
@@ -598,21 +567,15 @@ Crafty.extend({
             if (Crafty.mobile) {
 
                 // remove default gray highlighting after touch
-                if (typeof elem.webkitTapHighlightColor !== undefined) {
-                    elem.webkitTapHighlightColor = "rgba(0,0,0,0)";
-                }
 
-                Crafty.addEvent(this, Crafty.stage.elem, "touchmove", function (e) {
-                    e.preventDefault();
-                });
 
 
             } else {
-                elem.position = "relative";
-                //find out the offset position of the stage
-                offset = Crafty.DOM.inner(Crafty.stage.elem);
-                Crafty.stage.x = offset.x;
-                Crafty.stage.y = offset.y;
+                // elem.position = "relative";
+                // //find out the offset position of the stage
+                // offset = Crafty.DOM.inner(Crafty.stage.elem);
+                // Crafty.stage.x = offset.x;
+                // Crafty.stage.y = offset.y;
             }
 
             
@@ -717,9 +680,9 @@ Crafty.extend({
                 Crafty.trigger("ViewportResize");
             }
 
-            offset = Crafty.DOM.inner(Crafty.stage.elem);
-            Crafty.stage.x = offset.x;
-            Crafty.stage.y = offset.y;
+            // offset = Crafty.DOM.inner(Crafty.stage.elem);
+            // Crafty.stage.x = offset.x;
+            // Crafty.stage.y = offset.y;
         },
 
         /**@

@@ -205,31 +205,31 @@ Crafty.extend({
             first = e.changedTouches[0];
         }
 
-        var simulatedEvent = document.createEvent("MouseEvent");
-        simulatedEvent.initMouseEvent(type, true, true, window, 1,
-            first.screenX,
-            first.screenY,
-            first.clientX,
-            first.clientY,
-            false, false, false, false, 0, e.relatedTarget
-        );
+        // var simulatedEvent = document.createEvent("MouseEvent");
+        // simulatedEvent.initMouseEvent(type, true, true, window, 1,
+        //     first.screenX,
+        //     first.screenY,
+        //     first.clientX,
+        //     first.clientY,
+        //     false, false, false, false, 0, e.relatedTarget
+        // );
 
-        first.target.dispatchEvent(simulatedEvent);
+        // first.target.dispatchEvent(simulatedEvent);
 
-        // trigger click when it should be triggered
-        if (lastEvent !== null && lastEvent.type == 'mousedown' && type == 'mouseup') {
-            type = 'click';
+        // // trigger click when it should be triggered
+        // if (lastEvent !== null && lastEvent.type == 'mousedown' && type == 'mouseup') {
+        //     type = 'click';
 
-            simulatedEvent = document.createEvent("MouseEvent");
-            simulatedEvent.initMouseEvent(type, true, true, window, 1,
-                first.screenX,
-                first.screenY,
-                first.clientX,
-                first.clientY,
-                false, false, false, false, 0, e.relatedTarget
-            );
-            first.target.dispatchEvent(simulatedEvent);
-        }
+        //     simulatedEvent = document.createEvent("MouseEvent");
+        //     simulatedEvent.initMouseEvent(type, true, true, window, 1,
+        //         first.screenX,
+        //         first.screenY,
+        //         first.clientX,
+        //         first.clientY,
+        //         false, false, false, false, 0, e.relatedTarget
+        //     );
+        //     first.target.dispatchEvent(simulatedEvent);
+        // }
 
         //Don't prevent default actions if target node is input or textarea.
         if (e.target && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TEXTAREA') {
@@ -330,21 +330,21 @@ Crafty.extend({
 
 //initialize the input events onload
 Crafty.bind("Load", function () {
-    Crafty.addEvent(this, "keydown", Crafty.keyboardDispatch);
-    Crafty.addEvent(this, "keyup", Crafty.keyboardDispatch);
+    // Crafty.addEvent(this, "keydown", Crafty.keyboardDispatch);
+    // Crafty.addEvent(this, "keyup", Crafty.keyboardDispatch);
 
     Crafty.addEvent(this, Crafty.stage.elem, "mousedown", Crafty.mouseDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "mouseup", Crafty.mouseDispatch);
-    Crafty.addEvent(this, document.body, "mouseup", Crafty.detectBlur);
+    // Crafty.addEvent(this, document.body, "mouseup", Crafty.detectBlur);
     Crafty.addEvent(this, Crafty.stage.elem, "mousemove", Crafty.mouseDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "click", Crafty.mouseDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "dblclick", Crafty.mouseDispatch);
 
-    Crafty.addEvent(this, Crafty.stage.elem, "touchstart", Crafty.touchDispatch);
+    // Crafty.addEvent(this, Crafty.stage.elem, "touchstart", Crafty.touchDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "touchmove", Crafty.touchDispatch);
-    Crafty.addEvent(this, Crafty.stage.elem, "touchend", Crafty.touchDispatch);
+    // Crafty.addEvent(this, Crafty.stage.elem, "touchend", Crafty.touchDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "touchcancel", Crafty.touchDispatch);
-    Crafty.addEvent(this, Crafty.stage.elem, "touchleave", Crafty.touchDispatch);
+    // Crafty.addEvent(this, Crafty.stage.elem, "touchleave", Crafty.touchDispatch);
 });
 
 Crafty.bind("CraftyStop", function () {
@@ -365,7 +365,7 @@ Crafty.bind("CraftyStop", function () {
         Crafty.removeEvent(this, Crafty.stage.elem, "touchleave", Crafty.touchDispatch);
     }
 
-    Crafty.removeEvent(this, document.body, "mouseup", Crafty.detectBlur);
+    // Crafty.removeEvent(this, document.body, "mouseup", Crafty.detectBlur);
 });
 
 /**@

@@ -62,7 +62,10 @@ module.exports = function (grunt) {
 
         watch: {
             files: ['src/*.js'],
-            tasks: ['build:dev']
+            tasks: ['build:dev'],
+            options: {
+              interrupt: true,
+            }
         },
 
         uglify: {

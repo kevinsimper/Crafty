@@ -87,6 +87,7 @@ Crafty.c("Canvas", {
             x = ctx;
             ctx = Crafty.canvas.context;
         }
+        console.log('draw');
 
         var pos = this.drawVars.pos;
         pos._x = (this._x + (x || 0));
@@ -189,17 +190,6 @@ Crafty.extend({
             }
 
             //create an empty canvas element
-            var c;
-            c = document.createElement("canvas");
-            c.width = Crafty.viewport.width;
-            c.height = Crafty.viewport.height;
-            c.style.position = 'absolute';
-            c.style.left = "0px";
-            c.style.top = "0px";
-
-            Crafty.stage.elem.appendChild(c);
-            Crafty.canvas.context = c.getContext('2d');
-            Crafty.canvas._canvas = c;
 
             //Set any existing transformations
             var zoom = Crafty.viewport._scale;
