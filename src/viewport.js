@@ -602,15 +602,6 @@ Crafty.extend({
                     elem.webkitTapHighlightColor = "rgba(0,0,0,0)";
                 }
 
-                var meta = document.createElement("meta"),
-                    head = document.getElementsByTagName("HEAD")[0];
-
-                //hide the address bar
-                meta = document.createElement("meta");
-                meta.setAttribute("name", "apple-mobile-web-app-capable");
-                meta.setAttribute("content", "yes");
-                head.appendChild(meta);
-
                 Crafty.addEvent(this, Crafty.stage.elem, "touchmove", function (e) {
                     e.preventDefault();
                 });
